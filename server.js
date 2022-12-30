@@ -1,15 +1,19 @@
 const express = require("express")
 const path = require("path")
+
 const PORT = 3001;
 const app = express()
+
 const fs = require("fs")
 const util = require("util")
 const readFile = util.promisify(fs.readFile)
 const writeFile = util.promisify(fs.writeFile)
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+// Imports custom middleware
 app.use(express.static('public'));
+// GET Route
 app.get("/", function(req,res){
     res.sendFile(path.join(__dirname,"./public/index.html"))
 })
@@ -19,6 +23,7 @@ app.get("/notes", function(req,res){
 app.get("/api/notes", function(req,res){
     readFile('db/db.json', "utf-8").then(rawNotes => [].concat(JSON.parse(rawNotes))).then(notes=> res.json(notes))
 })
+// POST Route
 app.post("/api/notes", function(req,res) {
     readFile('db/db.json', "utf-8").then(rawNotes => [].concat(JSON.parse(rawNotes))).then(oldNotes=>{
         var noteObject = {title: req.body.title, text:req.body.text}
@@ -28,6 +33,6 @@ app.post("/api/notes", function(req,res) {
         }))
     }) 
 })
-app.listen(PORT, () =>
+app.listen(PORT, () => {
   console.log(`App listening at http://localhost:${PORT} 🚀`)
-);
+});
