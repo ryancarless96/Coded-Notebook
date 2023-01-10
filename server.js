@@ -1,6 +1,6 @@
 const express = require("express")
 const path = require("path")
-const dbjson = require("./db/db.json")
+let dbjson = require("./db/db.json")
 const PORT = process.env.PORT || 3001;
 const app = express()
 
@@ -35,7 +35,11 @@ app.post("/api/notes", function (req, res) {
 })
 app.delete("/api/notes/:id", (req,res)=> {
     let newdb = [ ]
-
+for (var i = 0; i < dbjson.length; i++){
+    if (dbjson[i].id !=req.params.id){
+        newdb.push(dbjson[i])
+    }
+}
 })
 app.listen(process.env.PORT, () => {
     console.log(`App listening at http://localhost:${PORT} 🚀`)
