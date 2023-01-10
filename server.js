@@ -40,6 +40,9 @@ for (var i = 0; i < dbjson.length; i++){
         newdb.push(dbjson[i])
     }
 }
+dbjson = newdb
+fs.writeFileSync("./db/db.json", JSON.stringify(dbjson))
+res.json(dbjson)
 })
 app.listen(process.env.PORT, () => {
     console.log(`App listening at http://localhost:${PORT} 🚀`)
